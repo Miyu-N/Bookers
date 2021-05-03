@@ -1,96 +1,45 @@
 <body>
-    
+<% if flash[:notice] %>
+  <p><%= flash[:notice] %></p>
+<% end %>  
 
-<h1 class="container">Books</h1>
+
+<h1>Books</h1>
 
 <table>
   <thead>
     <tr>
-      <th>title</th>
+      <th>Title</th>
       <th>Body</th>
     </tr>
+  <% @books.each do |book| %>
+    <tr>
+      <td><%= book.title %></td>
+      <td><%= book.body %></td>
+      <td><%= link_to "Show", book_path(book) %></td>
+      <td><%= link_to "Edit", edit_book_path(book) %></td>
+      <td><%= link_to "Destroy", book, method: :delete, data: { confirm: "Are you sure?" }  %></td>
+    </tr>
+  <% end %>
   </thead>
-  <tbody>
-    <tr>
-      <td>リーダブルコード</td>
-      <td>より良いコードを書くためのシンプルで実践的なテクニック</td>
-      <td>Show</td>
-      <td>Edit</td>
-      <td>Destroy</td>
-    </tr>
-    
-    <tr>
-      <td>トラブル知らずのシステム設計</td>
-      <td>システム設計の要点を図解で説明してくれます</td>
-      <td>Show</td>
-      <td>Edit</td>
-      <td>Destroy</td>
-    </tr>
-    
-    <tr>
-      <td>たのしいRuby</td>
-      <td>Rubyの入門におすすめです</td>
-      <td>Show</td>
-      <td>Edit</td>
-      <td>Destroy</td>
-    </tr>
-    
-    <tr>
-      <td>入門Git</td>
-      <td>gitについての基本操作から内部構造まで解説してくれます</td>
-      <td>Show</td>
-      <td>Edit</td>
-      <td>Destroy</td>
-    </tr>
-    
-    <tr>
-      <td>アルゴリズム図鑑</td>
-      <td>アルゴリズムについてカラーイラストでしっかり解説してくれます</td>
-      <td>Show</td>
-      <td>Edit</td>
-      <td>Destroy</td>
-    </tr>
-    
-    <tr>
-      <td>達人プログラマー</td>
-      <td>プログラマ入門者は必読！</td>
-      <td>Show</td>
-      <td>Edit</td>
-      <td>Destroy</td>
-    </tr>
-    
-    <tr>
-      <td>データベース実践入門</td>
-      <td>効率的なSQL文を教えてくれます</td>
-      <td>Show</td>
-      <td>Edit</td>
-      <td>Destroy</td>
-    </tr>
-    
-  </tbody>
-  
-  
 </table>
-
 
 <h2>New book</h2>
 
-<%= form_with model:@book, local:true do |f| %>
-
-<form class="field">Title</form>
-
-<%= f.text_field :title%>
-
-<form class="field">Body</form>
-
-<%= f.text_area :body %>
-
-<div class="actions">
-<br><%= f.submit 'Create Book' %></br>
-</div>
-
+<% if @book.errors.any? %>
+  <%= @book.errors.count %>errors prohibited this book from being saved:</br>
+  <% @book.errors.full_messages.each do |message| %>
+    <%= message %>
+  <% end %>
 <% end %>
 
-  
+
+<%= form_for(@book) do |f| %>
+  <h4>Title</h4>
+  <%= f.text_field :title %>
+  <h4>Body</h4>
+  <%= f.text_area :body %>
+  <p><%= f.submit 'Create Book' %></p>
+<% end %>
 
 </body>
